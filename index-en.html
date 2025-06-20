@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AnoTe – Presentation</title>
+  <title>AnoTe</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
+  <style>
     :root {
       --primary: #7c4dff;
       --secondary: #ede7f6;
@@ -29,10 +29,18 @@
     }
 
     header.hero {
-      background: linear-gradient(120deg, var(--primary), #b39ddb);
+      background: linear-gradient(120deg, var(--primary), #b39ddb, #9575cd);
+      background-size: 300% 300%;
+      animation: backgroundShift 10s ease infinite;
       color: white;
       padding: 120px 30px;
       text-align: center;
+    }
+
+    @keyframes backgroundShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
     .hero h1 {
@@ -46,6 +54,15 @@
       opacity: 0.95;
     }
 
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5em;
+      padding: 10px;
+      cursor: pointer;
+    }
+
     nav {
       position: sticky;
       top: 0;
@@ -54,7 +71,8 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
       display: flex;
       justify-content: center;
-      gap: 30px;
+      flex-wrap: wrap;
+      gap: 20px;
       z-index: 1000;
     }
 
@@ -88,9 +106,7 @@
       padding: 30px;
       margin-bottom: 30px;
       box-shadow: 0 4px 16px rgba(124, 77, 255, 0.1);
- 
-    text-align: justify;
-  
+      text-align: justify;
     }
 
     .card img {
@@ -108,41 +124,35 @@
       color: #6c5b7b;
     }
 
-    @keyframes backgroundShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
-
-}
-
-header.hero {
-  background: linear-gradient(120deg, var(--primary), #b39ddb, #9575cd);
-  background-size: 300% 300%;
-  animation: backgroundShift 10s ease infinite;
-  color: white;
-  padding: 120px 30px;
-  text-align: center;
-}
-
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 3em; }
+      .hero p { font-size: 1.2em; }
+      .menu-toggle { display: block; margin: 0 auto 10px; }
+      nav { display: none; flex-direction: column; align-items: center; }
+      nav.show { display: flex; }
+      section { padding: 0 10px; margin: 40px auto; }
+      .card { padding: 20px; }
+      footer { padding: 30px 10px; }
+    }
   </style>
 </head>
 <body>
   <header class="hero">
     <h1>AnoTe</h1>
-    <p>An adaptive text annotation system using large language models</p>
+    <p>Adaptive text annotation system using large language models</p>
   </header>
+
   <div style="text-align:right; padding: 10px 20px;">
     <a href="index.html">PL</a> | <a href="index-en.html">EN</a>
   </div>
+
+  <button class="menu-toggle" onclick="document.querySelector('nav').classList.toggle('show')">
+    &#9776; Menu
+  </button>
+
   <nav>
-    <a href="#intro">Introduction</a>
-    <a href="#research">Research</a>
+    <a href="#intro">Motivation</a>
+    <a href="#research">Selection Strategies</a>
     <a href="#explain">Explainability</a>
     <a href="#app">Application</a>
     <a href="#summary">Summary</a>
@@ -150,16 +160,16 @@ header.hero {
   </nav>
 
   <section id="intro">
-    <h2>Introduction</h2>
+    <h2>Motivation</h2>
     <div class="card">
-      <p>Manual text annotation is costly, time-consuming, and error-prone. It requires expert knowledge, which makes the process difficult to scale. AnoTe addresses this problem through an adaptive annotation automation system using large language models.</p>
+      <p>Manual text annotation is costly, time-consuming, and error-prone. It requires expert knowledge, making the process difficult to scale. AnoTe addresses this issue with an adaptive annotation automation system using large language models.</p>
     </div>
   </section>
 
   <section id="research">
     <h2>Selection Strategies</h2>
     <div class="card">
-      <p>The selection of examples for prompting has a significant impact on the effectiveness of large language models in annotation tasks. The data chosen as exemplars can substantially affect the quality of predictions, either improving or degrading it. The project implemented and tested both classic and novel methods. Among the classical ones, strategies based on randomness, model uncertainty, and chain-of-thought reasoning were considered. Other approaches included selecting unstable classifications, representative data in semantic graphs, and mixtures of Gaussian distributions. Experiments were conducted on six datasets and three large language models. The best results were obtained using chain-of-thought prompting with five stochastic generations at temperature 0.3, choosing the most frequent variant as the final prediction. In most datasets, this led to improvements over random selection. However, no universal strategy was found for all cases. Methodological frameworks are needed for strategy selection depending on task, data, and model. One challenge is that large language models are sensitive to subtle changes in prompting that may not affect humans, yet can lead to significantly different outputs.</p>
+      <p>The selection of examples for prompting significantly affects the performance of large language models in annotation tasks. The quality of predictions can improve or degrade depending on which data is presented as examples. The project implemented and tested both classical and novel methods. Classical methods included random selection, uncertainty-based strategies, and chain-of-thought techniques. We also explored choosing unstable classifications, semantically representative data, and mixtures of Gaussian distributions. Experiments were conducted on six datasets using three LLMs. The best results were achieved with chain-of-thought reasoning using five stochastic generations at temperature 0.3, selecting the most frequent variant as the final prediction. Most datasets showed improvement over random baselines. However, no universal strategy worked for all cases. A methodological framework is needed to select strategies depending on the task, data, and model. A key challenge is that large language models are sensitive to small changes in prompts that may be insignificant to humans but lead to major shifts in model output.</p>
       <img src="selection.png" alt="Selection Strategies">
     </div>
   </section>
@@ -167,14 +177,14 @@ header.hero {
   <section id="explain">
     <h2>Explainability</h2>
     <div class="card">
-      <p>Techniques such as SHAP, occlusion, and self-explaining mechanisms were applied. These allow for insights into the model's reasoning, increasing user trust and helping identify potential errors or biases.</p>
+      <p>Techniques such as SHAP, occlusion, and self-explaining mechanisms were used to gain insights into the model's reasoning process...</p>
     </div>
   </section>
 
   <section id="app">
     <h2>Application</h2>
     <div class="card">
-      <p>The research results were integrated into an application that enables annotation of any text dataset with chosen labels. The app suggests examples for manual annotation, allows explanation generation for any instance, and evaluates model predictions. Corrected examples are automatically added to the prompt set.</p>
+      <p>The research results were integrated into an application that enables annotation of any text dataset using selected labels. The app suggests examples for manual annotation, provides explanations for any instance, and evaluates model predictions. Corrected examples are automatically added to the prompt set.</p>
       <img src="app.png" alt="Application">
     </div>
   </section>
@@ -182,7 +192,7 @@ header.hero {
   <section id="summary">
     <h2>Summary</h2>
     <div class="card">
-      <p>Using chain-of-thought reasoning proves to be not only an effective tool supporting the annotation process but also a key element in improving the explainability of large language models. This enables better understanding of model decisions and builds trust in the results. Despite the impressive potential of LLMs – in both contextual understanding and adaptation to complex language tasks – their limitations must not be ignored. These models can still produce errors, require expert oversight, and behave unpredictably in certain scenarios. Therefore, their use in annotation must be conscious, flexible, and critical – combining technological capability with research responsibility and practical caution. Only then can the potential of LLMs be safely and effectively utilized in language processing.</p>
+      <p>Chain-of-thought reasoning proves to be not only an effective annotation aid but also a key factor in enhancing the explainability of large language models. This allows better understanding of model decisions and builds trust in the generated outcomes. Despite their impressive potential in understanding context and adapting to complex tasks, LLMs have limitations. They can still produce errors, require expert oversight, and behave unpredictably in some scenarios. Thus, their use in annotation tasks requires a conscious, flexible, and critical approach—one that combines technological capabilities with research responsibility and practical caution. Only then can LLMs be safely and effectively used in language processing and understanding tasks.</p>
     </div>
   </section>
 
@@ -201,3 +211,11 @@ header.hero {
   </footer>
 </body>
 </html>
+<script>
+  // Optional: auto-close nav on link click (mobile UX improvement)
+  document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.querySelector('nav').classList.remove('show');
+    });
+  });
+</script>

@@ -29,10 +29,24 @@
     }
 
     header.hero {
-      background: linear-gradient(120deg, var(--primary), #b39ddb);
+      background: linear-gradient(120deg, var(--primary), #b39ddb, #9575cd);
+      background-size: 300% 300%;
+      animation: backgroundShift 10s ease infinite;
       color: white;
       padding: 120px 30px;
       text-align: center;
+    }
+
+    @keyframes backgroundShift {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
     }
 
     .hero h1 {
@@ -46,6 +60,15 @@
       opacity: 0.95;
     }
 
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5em;
+      padding: 10px;
+      cursor: pointer;
+    }
+
     nav {
       position: sticky;
       top: 0;
@@ -54,7 +77,8 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
       display: flex;
       justify-content: center;
-      gap: 30px;
+      flex-wrap: wrap;
+      gap: 20px;
       z-index: 1000;
     }
 
@@ -88,7 +112,7 @@
       padding: 30px;
       margin-bottom: 30px;
       box-shadow: 0 4px 16px rgba(124, 77, 255, 0.1);
-    text-align: justify;
+      text-align: justify;
     }
 
     .card img {
@@ -106,28 +130,43 @@
       color: #6c5b7b;
     }
 
-    @keyframes backgroundShift {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 3em;
+      }
 
-}
+      .hero p {
+        font-size: 1.2em;
+      }
 
-header.hero {
-  background: linear-gradient(120deg, var(--primary), #b39ddb, #9575cd);
-  background-size: 300% 300%;
-  animation: backgroundShift 10s ease infinite;
-  color: white;
-  padding: 120px 30px;
-  text-align: center;
-}
+      .menu-toggle {
+        display: block;
+        margin: 0 auto 10px;
+      }
 
+      nav {
+        display: none;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      nav.show {
+        display: flex;
+      }
+
+      section {
+        padding: 0 10px;
+        margin: 40px auto;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      footer {
+        padding: 30px 10px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -135,14 +174,18 @@ header.hero {
     <h1>AnoTe</h1>
     <p>Adaptacyjny system anotacji tekstów z wykorzystaniem dużych modeli językowych</p>
   </header>
-  <div style="text-align:right; padding: 10px 20px;">
-  <a href="index.html">PL</a> | <a href="index-en.html">EN</a>
-</div>
 
+  <div style="text-align:right; padding: 10px 20px;">
+    <a href="index.html">PL</a> | <a href="index-en.html">EN</a>
+  </div>
+
+  <button class="menu-toggle" onclick="document.querySelector('nav').classList.toggle('show')">
+    &#9776; Menu
+  </button>
 
   <nav>
-    <a href="#intro">Wstęp</a>
-    <a href="#research">Badania</a>
+    <a href="#intro">Motywacja</a>
+    <a href="#research">Strategie selekcji</a>
     <a href="#explain">Wyjaśnialność</a>
     <a href="#app">Aplikacja</a>
     <a href="#summary">Podsumowanie</a>
@@ -150,7 +193,7 @@ header.hero {
   </nav>
 
   <section id="intro">
-    <h2>Wstęp</h2>
+    <h2>Motywacja</h2>
     <div class="card">
       <p>Ręczna anotacja tekstów jest kosztowna, czasochłonna i podatna na błędy. Wymaga wiedzy eksperckiej, co czyni proces trudnym do skalowania. AnoTe rozwiązuje ten problem poprzez adaptacyjny system automatyzacji anotacji z wykorzystaniem dużych modeli językowych.</p>
     </div>
@@ -159,7 +202,7 @@ header.hero {
   <section id="research">
     <h2>Strategie selekcji</h2>
     <div class="card">
-    <p>Selekcja przykładów do pobudzenia ma istotny wpływ na skuteczność dużych modeli językowych w zadaniach anotacji. To, jakie dane zostaną przekazane modelowi jako wzorce może znacząco zmienić jakość jego predykcji, poprawić bądź ją pogorszyć.  W ramach projektu zaimplementowano i przetestowano klasyczne jak i autorskie metody. Wśród metod klasycznych uwzględniono strategie  oparte na losowość, miary niepewności predykcji modelu oraz techniki z wykorzystaniem łańcuchowego rozumowania. Zbadano również wybór danych o niestabilnej klasyfikacji, tych reprezentatywnych w grafie semantycznym oraz z wykorzystaniem mieszaniny rozkładów normalnych. Eksperymenty przeprowadzono na sześciu zbiorach danych i trzech dużych modelach językowych. Najlepsze wyniki osiągnięto metodą łańcuchowego rozumowania z pięcioma stochastycznymi generacjami dla temperatura 0.3, z których wybierano najczęstszy wariant jako finalną predykcję. Dla większości zbiorów uzyskano poprawę względem metody losowej. Nie znaleziono jednak uniwersalnej strategii selekcji dla każdego przypadku. Potrzebne są metodyczne ramy jej doboru, uwzględniające zadanie, dane i model. Trudnością jest to, że duże modele językowe, są wrażliwe nawet na drobne zmiana pobudzenia, które nie mają znaczenia dla człowieka,  a prowadzą do istotnych zmian w wyniku modelu. </p>
+      <p>Selekcja przykładów do pobudzenia ma istotny wpływ na skuteczność dużych modeli językowych w zadaniach anotacji. To, jakie dane zostaną przekazane modelowi jako wzorce może znacząco zmienić jakość jego predykcji, poprawić bądź ją pogorszyć.  W ramach projektu zaimplementowano i przetestowano klasyczne jak i autorskie metody. Wśród metod klasycznych uwzględniono strategie  oparte na losowość, miary niepewności predykcji modelu oraz techniki z wykorzystaniem łańcuchowego rozumowania. Zbadano również wybór danych o niestabilnej klasyfikacji, tych reprezentatywnych w grafie semantycznym oraz z wykorzystaniem mieszaniny rozkładów normalnych. Eksperymenty przeprowadzono na sześciu zbiorach danych i trzech dużych modelach językowych. Najlepsze wyniki osiągnięto metodą łańcuchowego rozumowania z pięcioma stochastycznymi generacjami dla temperatura 0.3, z których wybierano najczęstszy wariant jako finalną predykcję. Dla większości zbiorów uzyskano poprawę względem metody losowej. Nie znaleziono jednak uniwersalnej strategii selekcji dla każdego przypadku. Potrzebne są metodyczne ramy jej doboru, uwzględniające zadanie, dane i model. Trudnością jest to, że duże modele językowe, są wrażliwe nawet na drobne zmiana pobudzenia, które nie mają znaczenia dla człowieka,  a prowadzą do istotnych zmian w wyniku modelu. </p>
       <img src="selection.png" alt="Strategie selekcji">
     </div>
   </section>
@@ -167,14 +210,14 @@ header.hero {
   <section id="explain">
     <h2>Wyjaśnialność</h2>
     <div class="card">
-      <p>Wykorzystano techniki takie jak SHAP, okluzja oraz mechanizmy samowyjaśniające. Umożliwiają one wgląd w logikę działania modelu, zwiększając zaufanie użytkownika oraz identyfikację potencjalnych błędów lub uprzedzeń modelu.</p>
+      <p>Wykorzystano techniki takie jak SHAP, okluzja oraz mechanizmy samowyjaśniające. Umożliwiają one wgląd w logikę działania modelu...</p>
     </div>
   </section>
 
   <section id="app">
     <h2>Aplikacja</h2>
     <div class="card">
-      <p>wyniki badań zostały zintegrowane w aplikacji umożliwiającej anotację dowolnego zbioru tekstowego wybranymi etykietami. Aplikacja proponuje użytkownikowi przykłady do ręcznej anotacji, pozwala generować wyjaśnienia dla dowolnej instancji oraz oceniać predykcje modelu. Poprawione przykłady automatycznie trafiają do zestawu pobudzeń.</p>
+      <p>Wyniki badań zostały zintegrowane w aplikacji umożliwiającej anotację dowolnego zbioru tekstowego wybranymi etykietami. Aplikacja proponuje użytkownikowi przykłady do ręcznej anotacji, pozwala generować wyjaśnienia dla dowolnej instancji oraz oceniać predykcje modelu. Poprawione przykłady automatycznie trafiają do zestawu pobudzeń.</p>
       <img src="app.png" alt="Aplikacja">
     </div>
   </section>
@@ -201,3 +244,11 @@ header.hero {
   </footer>
 </body>
 </html>
+<script>
+  // Optional: auto-close nav on link click (mobile UX improvement)
+  document.querySelectorAll('nav a').forEach(link => {
+    link.addEventListener('click', () => {
+      document.querySelector('nav').classList.remove('show');
+    });
+  });
+</script>
